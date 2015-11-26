@@ -40,20 +40,32 @@ namespace db
             var mButtonGet = FindViewById<Button>(Resource.Id.btnGet);
 
             //mButtonGet.Click += delegate { mEditTextGet.Text = db.findNumberRecords().ToString(); }; 
+            //mButtonGet.Click += mButtonGet_Click;
+        
             mButtonGet.Click += delegate
             {
-                var contactList = db.FnGetAllContactList();
+                var contactList =  db.FnGetAllContactList();
                 //Task.WhenAll(contactList);
 
-
+                var x = contactList.Result;
+                string str = string.Empty;
+                foreach (var item in x)
+                {
+                    str += item.FirstName;
+                    
+                    //mEditTextGet.Text += item.FirstName;
+                }
+                mEditTextGet.Text = str;
                 //var contacts = await Task.Run();
 
 
                 System.Threading.Tasks.Task.Delay(1000);
             };
-
+            
 
         }
+
+    
     }
 }
 
