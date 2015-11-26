@@ -44,10 +44,10 @@ namespace db
         
             mButtonGet.Click += delegate
             {
-                var contactList =  db.FnGetAllContactList();
+                var contactList = db.FnGetAllContactList();
                 //Task.WhenAll(contactList);
 
-                var x = contactList.Result;
+                var x = contactList;
                 string str = string.Empty;
                 foreach (var item in x)
                 {
@@ -59,7 +59,7 @@ namespace db
                 //var contacts = await Task.Run();
 
 
-                System.Threading.Tasks.Task.Delay(1000);
+                System.Threading.Tasks.Task.Delay(100);
             };
             
 

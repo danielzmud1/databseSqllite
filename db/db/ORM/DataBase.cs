@@ -16,17 +16,18 @@ namespace db.ORM
 {
     class DataBase
     {
-        private SQLiteAsyncConnection mCon;
+        private SQLiteConnection mCon;
 
-        public async Task<string> createDatabase()
+        public string createDatabase()
         {
             try
             {
                 string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-                mCon = new SQLiteAsyncConnection(System.IO.Path.Combine(folder, "db.db"));
-                mCon.DropTableAsync<User>();
+                mCon = new SQLiteConnection(System.IO.Path.Combine(folder, "db.db"));
+                mCon.DropTable<User>();
+
                 {
-                    await mCon.CreateTableAsync<User>();
+                    mCon.CreateTable<User>();
                     return "Database created";
                 }
             }
@@ -36,54 +37,23 @@ namespace db.ORM
             }
         }
 
-        public async void insertUpdateData(User data)
+        public void insertUpdateData(User data)
         {
 
             //var db = new SQLiteAsyncConnection(path);
-            if (await mCon.InsertAsync(data) != 0)
-                await mCon.UpdateAsync(data);
-
-
-
+            if ( mCon.Insert(data) != 0)
+                 mCon.Update(data);
         }
 
-
-
-        /*
-         public async Task<string> findNumberRecords()
-         {
-         
-             //var db = new SQLiteAsyncConnection(path);
-             // this counts all records in the database, it can be slow depending on the size of the database
-             var count = await mCon.ExecuteScalarAsync<string>("SELECT * FROM User");
-            
-             //var count = await mCon.ExecuteScalarAsync<string>("SELECT * FROM User");
-
-             // for a non-parameterless query
-             // var count = db.ExecuteScalarAsync<int>("SELECT Count(*) FROM Person WHERE FirstName="Amy");
-
-             return count;
-          }
-          */
-
         //to read all record
-        public async Task<List<User>> FnGetAllContactList()
+        public  List<User> FnGetAllContactList()
         {
-            var lstAllContact = await mCon.QueryAsync<User>("select * from User");
-            List<User> x = lstAllContact.ToList();
-
-            /*
-           // FnStopActivityIndicator();
-            var contacts =  Task.WhenAll(lstAllContact.Select(
-                 c => new User()
-                {
-                   // phones = (await ContactBLL.GetContactPhones(c.ContactID)).ToList(),
-                    firstName = c.FirstName
-                   // lastName = c.LastName
-                }));
-            */
-            System.Threading.Tasks.Task.Delay(1000);
+         
+            var lstAllContact = mCon.Query<User>("select * from User");
+            lstAllContact.ToList();
+            
             return lstAllContact;
+           
         }
         //to read matching record with string
 
